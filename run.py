@@ -34,6 +34,7 @@ def get_sales_data():
 
     return sales_data
 
+
 def validate_data(values):
     """
     Inside the try, converts all string value into integers.
@@ -42,22 +43,23 @@ def validate_data(values):
     """
     try:
         [int(value) for value in values]
-        if len(values) != 6 :
+        if len(values) != 6:
             raise ValueError(
                 f"Exactly 6 values required, you provided {len(values)}"
             )
     except ValueError as e:
-        print(f"Ivalid data: {e}, please try again.\n")
+        print(f"Invalid data: {e}, please try again.\n")
         return False
 
     return True
 
+
 def update_worksheet(data, worksheet):
     """
-    Recieves a list of integers to be inserted into a worksheet
+    Receives a list of integers to be inserted into a worksheet
     Update the relevant worksheet with the data provided
     """
-    print(f"Updatig {worksheet} worksheet...\n")
+    print(f"Updating {worksheet} worksheet...\n")
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
     print(f"{worksheet} worksheet updated successfully\n")
@@ -66,20 +68,20 @@ def update_worksheet(data, worksheet):
 def calculate_surplus_data(sales_row):
     """
     Compare sales with stock and calculate the surplus for each item type.
-    The surplus is defined as the sales figure substracted from the stock:
-     - Positive surplus indidcates waste
+    The surplus is defined as the sales figure subtracted from the stock:
+     - Positive surplus indicates waste
      - Negative surplus indicates extra made when stock was sold out.
     """
     print("Calculating surplus data...\n")
     stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1]
 
-    suplus_data = []
+    surplus_data = []
     for stock, sales in zip(stock_row, sales_row):
         surplus = int(stock) - sales
-        suplus_data.append(surplus)
+        surplus_data.append(surplus)
 
-    return suplus_data
+    return surplus_data
 
 
 def main():
@@ -91,6 +93,7 @@ def main():
     update_worksheet(sales_data, "sales")
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, "surplus")
+
 
 print("Welcome to Love Sandwiches Data automation")
 main()
